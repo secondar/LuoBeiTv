@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.container {
+  height: 100vh;
+  width: 100wh;
+  background-color: #2b3141;
+}
+.Main .el-header {
+  padding: 0;
+  height: 30px !important;
+}
+.Main .app-top-frame {
+  background-color: #282d3b;
+  width: 100%;
+  height: 30px !important;
+  line-height: 30px !important;
+  color: #a2a2a2;
+  display: flex;
+  justify-content: flex-start;
+}
+.Main .app-top-frame .right {
+  width: 80px;
+}
+.Main .app-top-frame .left {
+  width: calc(100% - 80px);
+  -webkit-app-region: drag;
+  text-align: left;
+  padding-left: 5px;
+  display: flex;
+  justify-content: flex-start;
+}
+.Main .app-top-frame .left .logo img {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  line-height: 20px;
+  margin-top: 5px;
+}
+.Main .app-top-frame .left .appname {
+  font-size: 15px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.Main .app-top-frame .right {
+  text-align: right;
+}
+.Main .app-top-frame .right button {
+  margin-right: 6px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  height: 30px;
+  color: #a2a2a2;
+  padding: 0;
+}
+.Main .app-top-frame .right button :hover {
+  background-color: #7a7a7a;
+}
+.Main .app-top-frame .right .close_app :hover {
+  background-color: #d30505;
+}
+.Main .video,
+.Main .footer {
+  padding: 0;
+}
+.Main .video .tip {
+  height: 20px;
+  line-height: 20px;
+  color: #a2a2a2;
+  position: absolute;
+  z-index: 1000;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.Nav .menu {
+  height: calc(100vh - 150px);
+  overflow: auto;
+}
+.Nav .menu::-webkit-scrollbar {
+  display: none;
+  /*隐藏滚动条*/
+}
+.Nav .nav-footer {
+  text-align: left;
+  background-color: #2b3141;
+}
+.Nav .nav-footer :hover {
+  background-color: #222734;
+}
+.Nav .nav-footer li {
+  height: 56px;
+  line-height: 56px;
+  font-size: 14px;
+  color: #303133;
+  padding: 0 20px;
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  box-sizing: border-box;
+  white-space: nowrap;
+  color: #a2a2a2;
+}
+.Nav .nav-footer li i {
+  font-size: 18px;
+  width: 24px;
+  margin-left: 2px;
+  color: #909399;
+}
