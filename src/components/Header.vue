@@ -42,10 +42,6 @@ export default {
 };
 </script>
 <style>
-.el-header {
-  padding: 0;
-  height: 30px !important;
-}
 .app-top-frame {
   background-color: #282d3b;
   width: 100%;

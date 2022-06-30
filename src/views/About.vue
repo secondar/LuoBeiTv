@@ -1,11 +1,11 @@
 <template>
   <div class="container Main" ref="container">
     <el-container>
-      <el-header>
+      <el-header class="app-header">
         <Header WindowsControlName="About" WindowsName="关于&说明" />
       </el-header>
       <el-container>
-        <el-main class="video"> 11111111111111111 </el-main>
+        <el-main> 11111111111111111 </el-main>
       </el-container>
     </el-container>
   </div>

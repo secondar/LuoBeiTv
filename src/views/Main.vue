@@ -1,7 +1,7 @@
 <template>
   <div class="container Main" ref="container">
     <el-container>
-      <el-header>
+      <el-header class="app-header">
         <Header WindowsControlName="MainWindows" WindowsName="萝北Tv" />
       </el-header>
       <el-container>

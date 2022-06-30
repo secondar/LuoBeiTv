@@ -49,7 +49,9 @@
                 content="选项211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
                 placement="left"
               >
-                <div>选项211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+                <div>
+                  选项211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                </div>
               </el-tooltip>
             </el-menu-item>
           </el-menu-item-group>
@@ -64,7 +66,7 @@
       </el-menu>
     </div>
     <ul class="nav-footer">
-      <li>
+      <li @click="SetPlayList">
         <i class="el-icon-setting"></i>
         <span>节目单设置</span>
       </li>
@@ -89,6 +91,17 @@ export default {
         WindowsName: "关于&说明",
         ruoter: "About",
         minHeight: 300,
+      });
+    },
+    SetPlayList() {
+      this.$store.dispatch("electron/NewWindows", {
+        WindowsControlName: "StorePlayList",
+        WindowsName: "节目单配置",
+        ruoter: "StorePlayList",
+        minHeight: 800,
+        heigth: 800,
+        minWith: 1000,
+        with: 1000,
       });
     },
   },

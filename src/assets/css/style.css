@@ -3,13 +3,19 @@
   padding: 0;
 }
 .container {
+  margin: 0;
+  padding: 0;
   height: 100vh;
   width: 100wh;
   background-color: #2b3141;
 }
-.Main .el-header {
+.app-header {
   padding: 0;
   height: 30px !important;
+}
+.el-main {
+  margin: 0;
+  padding: 0;
 }
 .Main .app-top-frame {
   background-color: #282d3b;
@@ -109,4 +115,74 @@
   width: 24px;
   margin-left: 2px;
   color: #909399;
+}
+.StorePlayList .header {
+  margin-top: 10px;
+  padding: 0;
+  height: 50px !important;
+}
+.StorePlayList .header .table-list-from {
+  display: flex;
+  justify-content: space-between;
+}
+.StorePlayList .header .table-list-from .item {
+  text-align: left;
+  width: 33.3%;
+}
+.StorePlayList .header .table-list-from .left {
+  padding-left: 10px;
+}
+.StorePlayList .header .table-list-from .right {
+  text-align: right;
+  padding-right: 30px;
+}
+.StorePlayList .el-icon-arrow-right {
+  color: #ffffff !important;
+}
+.StorePlayList .el-table__body-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.StorePlayList .el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 3px;
+}
+.StorePlayList .table {
+  background-color: transparent !important;
+  border: none !important;
+}
+.StorePlayList .el-table::before {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0px;
+}
+.StorePlayList .el-table--border::after {
+  width: 0px;
+}
+.StorePlayList .el-table th {
+  color: #ffffff;
+  font-size: 16px;
+  background-color: transparent !important;
+  height: 30px;
+  line-height: 30px;
+  border-top: 1px solid #ffffff;
+  text-align: center;
+}
+.StorePlayList .el-table tr,
+.StorePlayList .el-table td {
+  color: #ffffff;
+  font-size: 12px;
+  background-color: transparent !important;
+  text-align: center;
+}
+.StorePlayList .dialog {
+  text-align: left;
+}
+.StorePlayList .form .el-form-item {
+  display: flex;
+}
+.StorePlayList .form .el-form-item .el-form-item__content {
+  width: 80%;
+  margin-left: 10px !important;
 }
