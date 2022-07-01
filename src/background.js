@@ -6,9 +6,9 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 let WindowsDefaultConf = {
   width: 800,
-  height: 600,
+  height: 800,
   minWidth: 800,
-  minHeight: 600,
+  minHeight: 800,
 }
 const winURL = isDevelopment ? process.env.WEBPACK_DEV_SERVER_URL ? process.env.WEBPACK_DEV_SERVER_URL : 'app://./index.html' : `app://./index.html`
 let objWindowsList = {
@@ -63,7 +63,6 @@ ipcMain.on('SetAppToMin', function (event, arg) {
 })
 //窗口 最大化、恢复
 ipcMain.on('SetAppToMax', function (event, arg) {
-  console.log(arg);
   if (arg == null || arg == undefined || arg == "" || typeof (arg) != "string") {
     dialog.showMessageBox({
       type: "error",
@@ -112,14 +111,7 @@ ipcMain.on('AppExit', function (event, arg) {
   }
 })
 // 新建窗口
-
-
-ipcMain.on('NewWindows', function (event, arg) {
-  let objParam = {};
-  let arrArg = arg.split("_");
-  for (let i = 0; i < arrArg.length - 1; i += 2) {
-    objParam[arrArg[i]] = arrArg[i + 1];
-  }
+ipcMain.on('NewWindows', function (event, objParam) {
   if (objParam.WindowsControlName == undefined || objParam.WindowsControlName == null || objParam.WindowsControlName == "" || typeof (objParam.WindowsControlName) != "string") {
     dialog.showMessageBox({
       type: "error",
@@ -150,10 +142,10 @@ ipcMain.on('NewWindows', function (event, arg) {
     return;
   }
   objWindowsList[objParam.WindowsControlName] = new BrowserWindow({
-    width: objParam.width != undefined && typeof (objParam.width) == 'number' ? objParam.width : WindowsDefaultConf.width,
-    height: objParam.height != undefined && typeof (objParam.height) == 'number' ? objParam.height : WindowsDefaultConf.height,
-    minWidth: objParam.minWidth != undefined && typeof (objParam.minWidth) == 'number' ? objParam.minWidth : WindowsDefaultConf.minWidth,
-    minHeight: objParam.minHeight != undefined && typeof (objParam.minHeight) == 'number' ? objParam.minHeight : WindowsDefaultConf.minHeight,
+    width: objParam.width != undefined && objParam.width > 200 ? objParam.width : WindowsDefaultConf.width,
+    height: objParam.height != undefined && objParam.height > 200 ? objParam.height : WindowsDefaultConf.height,
+    minWidth: objParam.minWidth != undefined && objParam.minWidth > 200 ? objParam.minWidth : WindowsDefaultConf.minWidth,
+    minHeight: objParam.minHeight != undefined && objParam.minHeight > 200 ? objParam.minHeight : WindowsDefaultConf.minHeight,
     frame: objParam.fullscreen ? objParam.fullscreen : false,//是否显示边缘框
     fullscreen: objParam.fullscreen ? objParam.fullscreen : false, //是否全屏显示
     title: objParam.WindowsName,
@@ -166,11 +158,48 @@ ipcMain.on('NewWindows', function (event, arg) {
   objWindowsList[objParam.WindowsControlName].loadURL(winURL + '#/' + objParam.ruoter)  // 此处写 你要打开的路由地址
   if (!process.env.IS_TEST) objWindowsList[objParam.WindowsControlName].webContents.openDevTools()
   objWindowsList[objParam.WindowsControlName].on('close', () => {
-    objWindowsList[objParam.WindowsControlName].close();
+    // objWindowsList[objParam.WindowsControlName].destroy();
     objWindowsList[objParam.WindowsControlName] = null
   })
 })
 
+// 进程(窗体)之间通信转发
+// 发送使用 使用 store 发送 electron/CommunicationTransfer
+// 参数为 {ToWindow:"All为全部发送,其他为窗体/进程名称"}
+// 在进程(窗体)使用 created 内 使用ipcRenderer.on("CommunicationTransfer", (event, arg) => {}); 接收
+// 同时需要在进程(窗体)内 beforeDestoryed() {ipcRenderer.removeAllListeners("CommunicationTransfer");}
+ipcMain.on('CommunicationTransfer', (event, Arg) => {
+  if (Arg == undefined || Arg == null || Arg == "") {
+    return
+  }
+  if (Arg.ToWindow == undefined) {
+    return
+  }
+  switch (Arg.ToWindow) {
+    case 'All':
+      MainWindows.webContents.send('CommunicationTransfer', Arg);
+
+      for (let key in objWindowsList) {
+        let element = objWindowsList[key]
+        if (element != undefined && element != null) {
+          try {
+            element.webContents.send('CommunicationTransfer', Arg);
+          } catch { }
+        }
+      }
+      break
+    case 'MainWindows':
+      MainWindows.webContents.send('CommunicationTransfer', Arg);
+      break;
+    default:
+      try {
+        if (objWindowsList[Arg.ToWindow] != undefined && objWindowsList[Arg.ToWindow] != null) {
+          objWindowsList[Arg.ToWindow].webContents.send('CommunicationTransfer', Arg);
+        }
+      } catch { }
+      break
+  }
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {

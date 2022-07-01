@@ -8,15 +8,15 @@
         <el-main class="video">
           <div class="tip">正在播放:贝爷的自助餐...</div>
           <video ref="DomVideo" class="video-js vjs-default-skin">
-            <source
-              src="https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+            <!-- <source
+              src="http://gcksc.v.kcdnvip.com/gc/tyhjtynl_1/index.m3u8"
               type="application/x-mpegURL"
-            />
+            /> -->
           </video>
         </el-main>
 
         <el-aside width="200px">
-          <Nav />
+          <Nav :MenuList="MenuList" @ClickCallback="NavClickCallback" />
         </el-aside>
 
         <!-- <el-footer class="footer">Footer</el-footer> -->
@@ -26,12 +26,13 @@
 </template>
 
 <script>
-import Nav from "@/components/Nav.vue"; //导航
+import Nav from "@/components/Nav/Nav.vue"; //导航
 import "video.js/dist/video-js.css"; //播放器样式
 import videojs from "video.js"; //播放器
 import ElementResizeDetectorMaker from "element-resize-detector";
 import Header from "@/components/Header.vue"; //标题栏
-
+import { ToTree } from "@/utils/common";
+import { ipcRenderer } from "electron";
 videojs.addLanguage("zh-CN", {
   //播放器
   Play: "播放",
@@ -45,6 +46,8 @@ export default {
   },
   data() {
     return {
+      objLoading: null,
+      MenuList: [],
       WindowsName: "MainWindows",
       video: null,
       VideoSeting: {
@@ -56,9 +59,19 @@ export default {
       },
     };
   },
+  created() {
+    ipcRenderer.on(
+      "CommunicationTransfer",
+      this.handleAsynchronousCommunication
+    );
+  },
+  beforeDestoryed() {
+    ipcRenderer.removeAllListeners("CommunicationTransfer");
+  },
   mounted() {
     this.GetVideo(); //初始化播放器
     this.WatchSetVoidSize(); //元素尺寸改变监听
+    this.GetMenu();
   },
   beforeDestroy() {
     if (this.video) {
@@ -68,11 +81,13 @@ export default {
   methods: {
     //初始化播放器
     GetVideo() {
+      let that = this;
       this.video = videojs(
         this.$refs.DomVideo,
         this.VideoSeting,
         function onPlayerReady() {
-          this.play();
+          // this.play();
+          that.GetLastPlayInfo();
           this.on("ended", function () {
             // console.log("播放结束了!");
           });
@@ -92,6 +107,93 @@ export default {
           _this.video.height(height - 30);
         });
       });
+    },
+    GetMenu() {
+      this.ShowLoading();
+      this.$store
+        .dispatch("playlistModel/Select", {})
+        .then((res) => {
+          this.MenuList = ToTree(res, "_id", "pid", "children");
+          this.CloseLoading();
+        })
+        .catch((err) => {
+          this.CloseLoading();
+          this.$message({
+            message: "列表获取失败",
+            type: "error",
+          });
+        });
+    },
+    ShowLoading() {
+      if (this.objLoading == null) {
+        this.objLoading = this.$loading({
+          lock: true,
+          text: "Loading",
+          spinner: "el-icon-loading",
+          background: "rgba(0, 0, 0, 0.7)",
+        });
+      }
+    },
+    CloseLoading() {
+      if (this.objLoading != null) {
+        this.objLoading.close();
+        this.objLoading = null;
+      }
+    },
+    GetLastPlayInfo() {
+      this.ShowLoading();
+      this.$store
+        .dispatch("lastPlayInfoModel/Select", { _id: "0" })
+        .then((res) => {
+          this.CloseLoading();
+          if (res[0] != undefined || res[0].source != undefined) {
+            let el = res[0];
+            this.Play(el.source, el.title);
+          }
+        })
+        .catch((err) => {
+          this.CloseLoading();
+        });
+    },
+    NavClickCallback(el) {
+      this.Play(el.source, el.title);
+      this.$store
+        .dispatch("lastPlayInfoModel/Delete", {
+          _id: "0",
+          title: el.title,
+          source: el.source,
+        })
+        .then((res) => {
+          this.$store
+            .dispatch("lastPlayInfoModel/Add", {
+              _id: "0",
+              title: el.title,
+              source: el.source,
+            })
+            .then((res) => {})
+            .catch((err) => {});
+        })
+        .catch((err) => {
+          this.$store
+            .dispatch("lastPlayInfoModel/Add", {
+              _id: "0",
+              title: el.title,
+              source: el.source,
+            })
+            .then((res) => {})
+            .catch((err) => {});
+        });
+    },
+    handleAsynchronousCommunication(event, Arg) {
+      if (Arg.Action != undefined && Arg.Action == "ResetMenuList") {
+        this.MenuList = Arg.MenuList;
+      }
+    },
+    Play(url, title) {
+      try {
+        this.video.src([{ src: url }]);
+        this.video.play();
+      } catch {}
     },
   },
 };

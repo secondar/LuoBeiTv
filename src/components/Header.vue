@@ -26,7 +26,7 @@ export default {
   name: "Header",
   props: {
     WindowsControlName: String,
-    WindowsName: String,
+    WindowsName: String
   },
   methods: {
     QuitApp(WindowsControlName) {

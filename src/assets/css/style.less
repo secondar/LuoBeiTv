@@ -1,6 +1,10 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .container {
   margin: 0;
@@ -188,7 +192,7 @@
       color: #ffffff;
       font-size: 12px;
       background-color: transparent !important;
-      text-align: center;
+      // text-align: center;
       // border: none;
     }
   }
@@ -201,6 +205,42 @@
       .el-form-item__content {
         width: 80%;
         margin-left: 10px !important;
+      }
+    }
+  }
+  .content {
+    text-align: center;
+    width: 100%;
+  }
+}
+.About {
+  color: #a2a2a2;
+  height: calc(100vh - 500px);
+  height: 100vh;
+  .container {
+    margin: auto;
+    padding: 0;
+    height: 100% !important;
+    width: 550px;
+    margin-top: 35px;
+    .item {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 15px;
+      .lable {
+        width: 128px;
+        text-align: right;
+      }
+      .content {
+        text-align: left;
+        ul,
+        li {
+          list-style-type: none;
+        }
+        .link {
+          display: inline-block;
+          cursor: pointer;
+        }
       }
     }
   }

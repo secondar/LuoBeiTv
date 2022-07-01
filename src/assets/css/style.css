@@ -1,6 +1,10 @@
 * {
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .container {
   margin: 0;
@@ -174,7 +178,6 @@
   color: #ffffff;
   font-size: 12px;
   background-color: transparent !important;
-  text-align: center;
 }
 .StorePlayList .dialog {
   text-align: left;
@@ -185,4 +188,40 @@
 .StorePlayList .form .el-form-item .el-form-item__content {
   width: 80%;
   margin-left: 10px !important;
+}
+.StorePlayList .content {
+  text-align: center;
+  width: 100%;
+}
+.About {
+  color: #a2a2a2;
+  height: calc(100vh - 500px);
+  height: 100vh;
+}
+.About .container {
+  margin: auto;
+  padding: 0;
+  height: 100% !important;
+  width: 550px;
+  margin-top: 35px;
+}
+.About .container .item {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 15px;
+}
+.About .container .item .lable {
+  width: 128px;
+  text-align: right;
+}
+.About .container .item .content {
+  text-align: left;
+}
+.About .container .item .content ul,
+.About .container .item .content li {
+  list-style-type: none;
+}
+.About .container .item .content .link {
+  display: inline-block;
+  cursor: pointer;
 }
