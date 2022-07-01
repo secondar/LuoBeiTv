@@ -6,7 +6,7 @@
       </el-header>
       <el-container>
         <el-main class="video">
-          <div class="tip">正在播放:贝爷的自助餐...</div>
+          <div class="tip">正在播放:{{PlayTitle}}...</div>
           <video ref="DomVideo" class="video-js vjs-default-skin">
             <!-- <source
               src="http://gcksc.v.kcdnvip.com/gc/tyhjtynl_1/index.m3u8"
@@ -49,6 +49,7 @@ export default {
       objLoading: null,
       MenuList: [],
       WindowsName: "MainWindows",
+      PlayTitle:"",
       video: null,
       VideoSeting: {
         language: "zh-CN",
@@ -191,6 +192,7 @@ export default {
     },
     Play(url, title) {
       try {
+        this.PlayTitle = title
         this.video.src([{ src: url }]);
         this.video.play();
       } catch {}

@@ -21,9 +21,9 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   MainWindows = new BrowserWindow({
-    width: 800,
+    width: 815,
     height: 600,
-    minWidth: 800,
+    minWidth: 815,
     minHeight: 600,
     frame: false,
     title: "萝北Tv",

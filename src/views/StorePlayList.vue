@@ -23,6 +23,7 @@
             row-key="_id"
             border
             default-expand-all
+            :height="tableHeight"
             :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
           >
             <el-table-column
@@ -154,6 +155,7 @@ import Header from "@/components/Header.vue"; //标题栏
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { ToTree } from "@/utils/common";
+import ElementResizeDetectorMaker from "element-resize-detector";
 export default {
   name: "StorePlayList",
   components: {
@@ -162,6 +164,7 @@ export default {
   },
   data() {
     return {
+      tableHeight: 500,
       objLoading: null,
       tableData: [],
       dialogFormVisible: false,
@@ -478,6 +481,7 @@ export default {
     };
   },
   mounted() {
+    this.WatchSetTableHeigth(); //元素尺寸改变监听
     this.getList();
   },
   methods: {
@@ -697,6 +701,18 @@ export default {
         this.objLoading.close();
         this.objLoading = null;
       }
+    },
+    //监听窗体大小改变
+    WatchSetTableHeigth() {
+      const _this = this;
+      var erd = ElementResizeDetectorMaker();
+      erd.listenTo(this.$refs.container, (element) => {
+        var width = element.offsetWidth;
+        var height = element.offsetHeight;
+        _this.$nextTick(() => {
+          _this.tableHeight = height - 100
+        });
+      });
     },
   },
 };
