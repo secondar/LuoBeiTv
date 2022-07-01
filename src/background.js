@@ -5,10 +5,10 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 let WindowsDefaultConf = {
-  width: 800,
-  height: 800,
-  minWidth: 800,
-  minHeight: 800,
+  width: 815,
+  height: 600,
+  minWidth: 815,
+  minHeight: 600,
 }
 const winURL = isDevelopment ? process.env.WEBPACK_DEV_SERVER_URL ? process.env.WEBPACK_DEV_SERVER_URL : 'app://./index.html' : `app://./index.html`
 let objWindowsList = {
@@ -21,10 +21,10 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   MainWindows = new BrowserWindow({
-    width: WindowsDefaultConf.width,
-    height: WindowsDefaultConf.height,
-    minWidth: WindowsDefaultConf.minWidth,
-    minHeight: WindowsDefaultConf.minHeight,
+    width: 800,
+    height: 600,
+    minWidth: 800,
+    minHeight: 600,
     frame: false,
     title: "萝北Tv",
     webPreferences: {
@@ -156,7 +156,7 @@ ipcMain.on('NewWindows', function (event, objParam) {
   })
 
   objWindowsList[objParam.WindowsControlName].loadURL(winURL + '#/' + objParam.ruoter)  // 此处写 你要打开的路由地址
-  if (!process.env.IS_TEST) objWindowsList[objParam.WindowsControlName].webContents.openDevTools()
+  // if (!process.env.IS_TEST) objWindowsList[objParam.WindowsControlName].webContents.openDevTools()
   objWindowsList[objParam.WindowsControlName].on('close', () => {
     // objWindowsList[objParam.WindowsControlName].destroy();
     objWindowsList[objParam.WindowsControlName] = null

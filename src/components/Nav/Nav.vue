@@ -74,10 +74,10 @@ export default {
         WindowsControlName: "StorePlayList",
         WindowsName: "节目单配置",
         ruoter: "StorePlayList",
-        minHeight: 800,
-        heigth: 800,
-        minWith: 1000,
-        with: 1000,
+        minHeight: 600,
+        heigth: 600,
+        minWith: 815,
+        with: 815,
       });
     },
     Callback(row) {
